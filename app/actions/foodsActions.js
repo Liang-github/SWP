@@ -1,0 +1,30 @@
+import * as types form './actionTypes';
+import Util from '../common/utils';
+
+export let fetchCategories = () => {
+	let URL = 'http://food.boohee.com/fb/v1/categories/list';
+
+	return dispatch => {
+		dispatch(fetchCategorieList());
+
+		Util.get(URL, (response) => {
+			dispatch(receiveCategoryList(response.group));
+		}, (error) => {
+			console.log('Fetch category list error:' + error);
+			dispatch(receiveCategoryList([]));
+		});
+	}
+}
+
+let fetchCategoryList = () => {
+	return {
+		type: types.FETCH_CATEGORY_LIST,
+	}
+}
+
+let receiveCategoryList = (categoryList) => {
+	return {
+		type: types.RECEIVE_CATEGORY_LIST,
+		categoryList: categoryList,
+	}
+}
